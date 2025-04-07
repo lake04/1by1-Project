@@ -9,8 +9,8 @@ public class Unit : MonoBehaviour
     public float damage;
     public float moveSpeed;
     public bool isMove = true;
-    public bool isAttack;
-    public float atackCoolTime;
+    public bool isAttack = true;
+    public float attackCoolTime;
     void Start()
     {
         
