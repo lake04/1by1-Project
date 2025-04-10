@@ -21,9 +21,26 @@ public static class ProceduralGenerationAlgorithm
         return path;
     }
 
-    public static class Direction2D
+    public static List<Vector2Int> RandomWalkCorridor(Vector2Int startPosition, int corridorLength)
     {
-        public static List<Vector2Int> cardinalDirecionsList = new List<Vector2Int>
+        List<Vector2Int> corridor = new List<Vector2Int>();
+        var direction = Direction2D.GetRandomCardinalDirection();
+        var currentPosition = startPosition;
+        corridor.Add(currentPosition);
+
+        for (int i = 0; i < corridorLength; i++)
+        {
+            currentPosition += direction;
+            corridor.Add(currentPosition);
+        }
+        return corridor;
+    }
+
+}
+
+public static class Direction2D
+{
+    public static List<Vector2Int> cardinalDirecionsList = new List<Vector2Int>
         {
             new Vector2Int(0,1),    //위
             new Vector2Int(1,0),    //오른쪽
@@ -31,9 +48,8 @@ public static class ProceduralGenerationAlgorithm
             new Vector2Int(-1,0)    //왼쪽
         };
 
-        public static Vector2Int GetRandomCardinalDirection()
-        {
-            return cardinalDirecionsList[Random.Range(0, cardinalDirecionsList.Count)];
-        }
+    public static Vector2Int GetRandomCardinalDirection()
+    {
+        return cardinalDirecionsList[Random.Range(0, cardinalDirecionsList.Count)];
     }
 }
