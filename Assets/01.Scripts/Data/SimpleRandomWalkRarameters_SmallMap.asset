@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SimpleRandomWalkRarameters_SmallMap
   m_EditorClassIdentifier: 
   iterations: 20
-  walkLength: 20
+  walkLength: 10
   startRandomlyEachIteration: 1
