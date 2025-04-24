@@ -1,18 +1,18 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UGS;
 
 public class GunDataManager : MonoBehaviour
 {
-    public static List<GunDatas> GunDatas = new List<GunDatas>();
+    public static List<GunData> GunDatas = new List<GunData>();
     void Awake()
     {
         UnityGoogleSheet.LoadAllData();
 
-        foreach (var row in GunData.Data.DataList)
+        foreach (var row in GunDataTable.Data.DataList)
         {
-            GunDatas data = new GunDatas()
+            GunData data = new GunData()
             {
                 gunID = row.gunID,
                 gunName = row.gunName,
@@ -28,6 +28,7 @@ public class GunDataManager : MonoBehaviour
 
             GunDatas.Add(data);
         }
+        GunDatabase.Instance.Initialize(GunDatas);
     }
 
     private GunCategory ParseCategory(string value)
@@ -38,23 +39,7 @@ public class GunDataManager : MonoBehaviour
         }
 
         Debug.LogWarning($"Invalid GunCategory: {value}, defaulting to SecondaryWeapon");
-        return GunCategory.SecondaryWeapon; // ±âº»°ª ¼³Á¤
+        return GunCategory.SecondaryWeapon; // ï¿½âº»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
-    public static List<GunDatas> GetRandomGuns(int count)
-    {
-        List<GunDatas> source = new List<GunDatas>(GunDatas);
-        List<GunDatas> result = new List<GunDatas>();
-
-        for (int i = 0; i < count; i++)
-        {
-            if (source.Count == 0) break;
-
-            int rand = UnityEngine.Random.Range(0, source.Count);
-            result.Add(source[rand]);
-            source.RemoveAt(rand);
-        }
-
-        return result;
-    }
 }

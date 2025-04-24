@@ -14,7 +14,7 @@ using System.Reflection;
 using UnityEngine;
 
 
-namespace GunData
+namespace GunDataTable
 {
     [GoogleSheet.Attribute.TableStruct]
     public partial class Data : ITable
@@ -81,7 +81,7 @@ namespace GunData
                  return;
             }
 
-            string text = reader.ReadData("GunData"); 
+            string text = reader.ReadData("GunDataTable"); 
             if (text != null)
             {
                 var result = Newtonsoft.Json.JsonConvert.DeserializeObject<ReadSpreadSheetResult>(text);

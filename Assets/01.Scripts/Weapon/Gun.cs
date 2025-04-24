@@ -1,17 +1,17 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    [Header("ÃÑ °ü·Ã µ¥ÀÌÅÍ")]
+    [Header("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public float bulletSpeed = 10f;
     public float attackCoolTime = 0.3f;
     public int maxBullet = 6;
     public int currentBullet = 6;
 
-    [Header("±ÙÁ¢ °ø°Ý")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public Vector2 meleeSize = new Vector2(1.5f, 1.0f);
     public float meleeOffset = 1.0f;
 
@@ -79,7 +79,7 @@ public class Gun : MonoBehaviour
         {
             if (col.CompareTag("Enemy"))
             {
-                Debug.Log("Àû °ø°Ý!");
+                Debug.Log("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!");
             }
         }
 
@@ -88,7 +88,7 @@ public class Gun : MonoBehaviour
         isAttack = true;
     }
 
-    public void EquipWeapon(GunDatas gun)
+    public void EquipWeapon(GunData gun)
     {
         this.bulletSpeed = gun.bulletSpeed;
         this.attackCoolTime = 1f / gun.fireRate;

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,14 +12,14 @@ public class Player : Unit
     private Vector2 movement;
     #endregion
 
-    #region ±¸¸£±â °ü·Ã
+    #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private Vector2 lastMoveDirection = Vector2.right;
     private bool isRoll = true;
     private float rollSpeed = 2f;
     private float rollCooltime = 0.6f;
     #endregion
 
-    #region ÃÑ
+    #region ï¿½ï¿½
     [SerializeField]
     public Transform aimingPoint;
     public int macBullet = 20;
@@ -62,7 +62,7 @@ public class Player : Unit
         isAttack = true;
     }
 
-    #region ÇÃ·¹ÀÌ¾î ÄÁÆ²·Ñ·¯    
+    #region ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Æ²ï¿½Ñ·ï¿½    
     private void ControlPlayer()
     {
         Move();
@@ -88,7 +88,7 @@ public class Player : Unit
     {
         if (Input.GetKeyDown(KeyCode.Space) && isRoll)
         {
-            Debug.Log("±¸¸£±â");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 
             isMove = false;
             isRoll = false;
@@ -108,7 +108,7 @@ public class Player : Unit
     }
     #endregion
 
-    #region ÃÑ °ü·Ã
+    #region ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     
     private void AimingPoint()
