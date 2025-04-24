@@ -5,13 +5,11 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    [Header("�� ���� ������")]
     public float bulletSpeed = 10f;
     public float attackCoolTime = 0.3f;
     public int maxBullet = 6;
     public int currentBullet = 6;
 
-    [Header("���� ����")]
     public Vector2 meleeSize = new Vector2(1.5f, 1.0f);
     public float meleeOffset = 1.0f;
 
@@ -75,11 +73,11 @@ public class Gun : MonoBehaviour
 
         Collider2D[] hits = Physics2D.OverlapBoxAll(attackCenter, meleeSize, attackAngle);
 
-        foreach (Collider2D col in hits)
+        foreach (Collider2D collider in hits)
         {
-            if (col.CompareTag("Enemy"))
+            if (collider.CompareTag("Enemy"))
             {
-                Debug.Log("�� ����!");
+                Debug.Log("충돌");
             }
         }
 

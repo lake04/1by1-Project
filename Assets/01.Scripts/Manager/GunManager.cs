@@ -7,7 +7,6 @@ public class GunManager : MonoBehaviour
     public static GunManager Instance { get; private set; }
 
     public Dictionary<GunCategory, GunData> equippedWeapons = new();
-    public Action<GunCategory, GunData> OnWeaponEquipped;
 
     private void Awake()
     {
@@ -31,12 +30,14 @@ public class GunManager : MonoBehaviour
         equippedWeapons[category] = newGun;
 
         Debug.Log($"장착된 {category} 무기: {newGun.gunName}");
-
-      
     }
 
-    public GunData GetEquippedWeapon(GunCategory category)
+    private void SelsetGun()
     {
-        return equippedWeapons.TryGetValue(category, out var gun) ? gun : null;
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            GunData gun = equippedWeapons[GunCategory.MainWeapon];
+        }
     }
+   
 }
