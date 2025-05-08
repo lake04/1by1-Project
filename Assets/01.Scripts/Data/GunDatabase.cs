@@ -4,13 +4,14 @@ using UnityEngine;
 public class GunDatabase : MonoBehaviour
 {
     public static GunDatabase Instance { get; private set; }
+    public List<Sprite> sprites = new List<Sprite>();
 
-    private List<GunData> allGunData = new();
+    public List<GunData> allGunData = new();
     private Dictionary<int, GunData> gunById = new();
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
@@ -19,6 +20,7 @@ public class GunDatabase : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+ 
 
     public void Initialize(List<GunData> dataList)
     {

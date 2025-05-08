@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,17 +11,22 @@ public class Player : Unit
     #region compoment
     private Rigidbody2D rigidbody2D;
     private Vector2 movement;
+    public float angle;
+    public Animator animator;
+    private SpriteRenderer spriteRenderer;
     #endregion
 
-    #region ������ ����
+    #region 구르기
     private Vector2 lastMoveDirection = Vector2.right;
+    [SerializeField]
     private bool isRoll = true;
-    private float rollSpeed = 2f;
-    private float rollCooltime = 0.6f;
+    [SerializeField]
+    private float rollSpeed = 4f;
+    private float rollCooltime = 0.8f;
     #endregion
 
-    #region ��
-    [SerializeField]
+    #region 총
+    public GameObject hand;
     public Transform aimingPoint;
     public int macBullet = 20;
     public int currentBullt;
@@ -30,14 +36,22 @@ public class Player : Unit
 
     private void Awake()
     {
-        Instance = this;
+        if(Instance != null)
+        {
+            Destroy(this.gameObject );
+            return;
+        }
+        else Instance = this;
+
+
+        Init();
+
 
     }
     void Start()
     {
-        Init();
-    }
 
+    }
     void Update()
     {
         AimingPoint();
@@ -52,6 +66,8 @@ public class Player : Unit
     private void Init()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         Cursor.visible = false;
         maxHp = 20f;
         curHp = maxHp;
@@ -62,20 +78,57 @@ public class Player : Unit
         isAttack = true;
     }
 
-    #region �÷��̾� ��Ʋ�ѷ�    
+    #region 움직임 
     private void ControlPlayer()
     {
         Move();
     }
 
+    private void Idle()
+    {
+        if (Input.GetAxisRaw("Horizontal") == 1 || Input.GetAxisRaw("Vertical") == 1 || Input.GetAxisRaw("Vertical") == -1)
+        {
+            spriteRenderer.flipX = false;
+            animator.SetBool("isMove", false);
+
+            animator.SetFloat("LastMoveX", Input.GetAxisRaw("Horizontal"));
+            animator.SetFloat("LastMoveY", Input.GetAxisRaw("Vertical"));
+        }
+        if(Input.GetAxisRaw("Horizontal") == -1)
+        {
+            spriteRenderer.flipX = true;
+            animator.SetBool("isMove", false);
+
+            animator.SetFloat("LastMoveX", Input.GetAxisRaw("Horizontal"));
+            animator.SetFloat("LastMoveY", Input.GetAxisRaw("Vertical"));
+        }
+    }
+
+
     public override void Move()
     {
+        Idle();
         if (isMove)
         {
+            moveing = true;
+            animator.SetBool("isIdle", false);
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
 
-            if (movement != Vector2.zero) 
+            //spriteRenderer.flipX = movement.x < 0;
+            if (movement.x != 0 || movement.y != 0)
+            {
+                animator.SetBool("isMove", true);
+            }
+            else
+            {
+                animator.SetBool("isMove", false);
+                moveing = false;
+            }
+            animator.SetFloat("inPutX", movement.x);
+            animator.SetFloat("inPutY", movement.y);
+
+            if (movement != Vector2.zero)
             {
                 lastMoveDirection = movement.normalized;
             }
@@ -88,10 +141,10 @@ public class Player : Unit
     {
         if (Input.GetKeyDown(KeyCode.Space) && isRoll)
         {
-            Debug.Log("������");
-
             isMove = false;
             isRoll = false;
+            isAttack = false;
+            animator.SetBool("isRoll",true );
 
             Vector2 rollDirection = (movement != Vector2.zero) ? movement.normalized : lastMoveDirection;
 
@@ -105,11 +158,12 @@ public class Player : Unit
         yield return new WaitForSeconds(rollCooltime); 
         isMove = true;
         isRoll = true;
+        isAttack=true;
+        animator.SetBool("isRoll", false);
     }
     #endregion
 
-    #region �� ����
-
+    #region 공격
     
     private void AimingPoint()
     {

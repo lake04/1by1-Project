@@ -6,7 +6,13 @@ using UGS;
 public class GunDataManager : MonoBehaviour
 {
     public static List<GunData> GunDatas = new List<GunData>();
-    void Awake()
+
+    void Start()
+    {
+        LoadData();
+    }
+
+    private void LoadData()
     {
         UnityGoogleSheet.LoadAllData();
 
@@ -25,7 +31,7 @@ public class GunDataManager : MonoBehaviour
                 fireRate = row.fireRate,
                 bulletSpeed = row.bulletSpeed
             };
-
+            Debug.Log(data);
             GunDatas.Add(data);
         }
         GunDatabase.Instance.Initialize(GunDatas);
@@ -39,7 +45,8 @@ public class GunDataManager : MonoBehaviour
         }
 
         Debug.LogWarning($"Invalid GunCategory: {value}, defaulting to SecondaryWeapon");
-        return GunCategory.SecondaryWeapon; // �⺻�� ����
+        return GunCategory.SecondaryWeapon; 
     }
 
+  
 }

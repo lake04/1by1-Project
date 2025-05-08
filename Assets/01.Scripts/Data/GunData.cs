@@ -17,10 +17,10 @@ public class GunRow
     public int damage;
     public int ammoPerShot;
     public int bulletsPerShot;
-    public float bulletSpread;
-    public float reloadTime;
-    public float fireRate;
-    public float bulletSpeed;
+    public int bulletSpread;
+    public int reloadTime;
+    public int fireRate;
+    public int bulletSpeed;
 }
 
 [System.Serializable]
@@ -37,3 +37,4 @@ public class GunData
     public float fireRate;
     public float bulletSpeed;
 }
+
