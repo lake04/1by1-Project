@@ -66,6 +66,9 @@ namespace GunDataTable
 		public System.Int32 reloadTime;
 		public System.Int32 fireRate;
 		public System.Int32 bulletSpeed;
+		public System.Int32 skillId;
+		public System.Int32 canEquipParts;
+		public System.String allowedPartTypes;
   
 
 #region fuctions

@@ -101,6 +101,7 @@ public class Gun : MonoBehaviour
         for (int i = 0; i < bulletsPerShot; i++)
         {
             GameObject bullet = GameManager.Instance.pool.Get(0);
+            bullet.GetComponent<NorBullet>().Init(damage);
             if (bullet == null) continue;
 
             Vector2 dir = (aimingPoint.position - transform.position).normalized;

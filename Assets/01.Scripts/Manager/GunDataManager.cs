@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System;
 using UGS;
+using UnityEngine;
 
 public class GunDataManager : MonoBehaviour
 {
@@ -18,7 +18,7 @@ public class GunDataManager : MonoBehaviour
 
         foreach (var row in GunDataTable.Data.DataList)
         {
-            GunData data = new GunData()
+            GunData data = new GunData
             {
                 gunID = row.gunID,
                 gunName = row.gunName,
@@ -29,24 +29,50 @@ public class GunDataManager : MonoBehaviour
                 bulletSpread = row.bulletSpread,
                 reloadTime = row.reloadTime,
                 fireRate = row.fireRate,
-                bulletSpeed = row.bulletSpeed
-            };
-            Debug.Log(data);
+                bulletSpeed = row.bulletSpeed,
+                skillId = row.skillId,
+                canEquipParts = SetBool(row.canEquipParts),
+                allowedPartTypes = ParsePartTypes(row.allowedPartTypes)
+                
+        }
+        ;
             GunDatas.Add(data);
         }
+
         GunDatabase.Instance.Initialize(GunDatas);
+    }
+
+    private bool SetBool(int _num)
+    {
+        if (_num == 1)
+        {
+            return true;
+        }
+        else return  false;
     }
 
     private GunCategory ParseCategory(string value)
     {
-        if (Enum.TryParse(value, out GunCategory category))
-        {
-            return category;
-        }
-
-        Debug.LogWarning($"Invalid GunCategory: {value}, defaulting to SecondaryWeapon");
-        return GunCategory.SecondaryWeapon; 
+        return Enum.TryParse(value, out GunCategory category) ? category : GunCategory.SecondaryWeapon;
     }
 
-  
+    private List<GunPartType> ParsePartTypes(string csv)
+    {
+        List<GunPartType> result = new();
+        if (string.IsNullOrEmpty(csv)) return result;
+
+        string[] tokens = csv.Split(',');
+        foreach (var token in tokens)
+        {
+            if (Enum.TryParse(token.Trim(), out GunPartType type))
+            {
+                result.Add(type);
+            }
+            else
+            {
+                Debug.LogWarning($"Invalid part type: {token}");
+            }
+        }
+        return result;
+    }
 }

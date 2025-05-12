@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
+using UnityEngine.UI;
 
 public class GunManager : MonoBehaviour
 {
@@ -14,7 +16,7 @@ public class GunManager : MonoBehaviour
     public int maxBullet = 100;
     public int curBullet;
 
-    [SerializeField] public Dictionary<GunCategory, Sprite> slots = new();
+    [SerializeField] private List<Image> slots = new();
 
     [Header("무기 슬롯")]
     [SerializeField] private Dictionary<GunCategory, GunData> equippedWeapons = new();
@@ -60,7 +62,21 @@ public class GunManager : MonoBehaviour
 
         GunCategory category = _newGun.gunCategory;
         equippedWeapons[category] = _newGun;
-        slots[category] = GunDatabase.Instance.sprites[_newGun.gunID];
+
+        if (category == GunCategory.MainWeapon)
+        {
+            slots[0].GetComponentInChildren<Image>().sprite = GunDatabase.Instance.sprites[_newGun.gunID];
+        }
+
+        else if (category == GunCategory.SecondaryWeapon)
+        {
+            slots[1].GetComponentInChildren<Image>().sprite = GunDatabase.Instance.sprites[_newGun.gunID];
+        }
+
+        else if(category == GunCategory.MeleeWeapon)
+        {
+            slots[2].GetComponentInChildren<Image>().sprite = GunDatabase.Instance.sprites[_newGun.gunID];
+        }
 
         Debug.Log($"장착 완료: {category} 슬롯에 {_newGun.gunName}");
 
@@ -125,6 +141,20 @@ public class GunManager : MonoBehaviour
         {
             spriteRenderer.sprite = GunDatabase.Instance.sprites[currentGun.gunID];
         }
+        if (currentWeaponSlot == GunCategory.MainWeapon)
+        {
+            slots[0].GetComponentInParent<Image>().color = Color.red;
+        }
+
+        else if (currentWeaponSlot == GunCategory.SecondaryWeapon)
+        {
+            slots[1].GetComponentInParent<Image>().color = Color.red;
+        }
+
+        else if (currentWeaponSlot == GunCategory.MeleeWeapon)
+        {
+            slots[2].GetComponentInParent<Image>().color = Color.red ;
+        }
 
         // Gun 컴포넌트 초기화
         // 장착 무기 생성 시
@@ -148,6 +178,7 @@ public class GunManager : MonoBehaviour
 
     public void CreateGun(GunData _gunData, Vector3 spawnPosition)
     {
+        Debug.Log("생성");
         GameObject _gun = Instantiate(gun, spawnPosition, Quaternion.identity);
         _gun.name = _gunData.gunName;
         _gun.AddComponent<BoxCollider2D>();
