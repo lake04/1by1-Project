@@ -34,7 +34,9 @@ public class GunRow
     public float bulletSpeed;
     public int skillId;
     public bool canEquipParts;
-    public string allowedPartTypes; // CSV 문자열로 저장 (예: "Barrel,Handle")
+    public string allowedPartTypes; 
+    public int maxAmmo;
+    public int curAmmo;
 }
 
 [System.Serializable]
@@ -53,4 +55,6 @@ public class GunData
     public int skillId;
     public bool canEquipParts = true;
     public List<GunPartType> allowedPartTypes = new();
+    public int maxAmmo;
+    public int curAmmo;
 }

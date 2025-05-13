@@ -69,6 +69,7 @@ namespace GunDataTable
 		public System.Int32 skillId;
 		public System.Int32 canEquipParts;
 		public System.String allowedPartTypes;
+		public System.Int32 maxAmmo;
   
 
 #region fuctions

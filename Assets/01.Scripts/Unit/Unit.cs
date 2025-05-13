@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour
     public bool moveing = false;
     public bool isAttack = true;
     public float attackCoolTime;
+
     void Start()
     {
         
@@ -35,6 +36,7 @@ public class Unit : MonoBehaviour
             UiManager.instance.UpdateUI();
         }
     }
+
     public virtual void Move()
     {
             

@@ -32,10 +32,9 @@ public class GunDataManager : MonoBehaviour
                 bulletSpeed = row.bulletSpeed,
                 skillId = row.skillId,
                 canEquipParts = SetBool(row.canEquipParts),
-                allowedPartTypes = ParsePartTypes(row.allowedPartTypes)
-                
-        }
-        ;
+                allowedPartTypes = ParsePartTypes(row.allowedPartTypes),
+                maxAmmo = row.maxAmmo,
+            };
             GunDatas.Add(data);
         }
 

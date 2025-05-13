@@ -16,6 +16,11 @@ public class Gun : MonoBehaviour
     public float fireRate;   // 초당 발사 수
     public float bulletSpeed;
 
+    [Header("탄창 관련")]
+    public int maxAmmo;
+    public int curAmmo;
+    [SerializeField] private bool isReloading = false;
+
     public bool isEquipped = false;
     public Vector2 meleeSize = new Vector2(1.5f, 1.0f);
     public float meleeOffset = 1.0f;
@@ -49,23 +54,11 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (!isEquipped) return; 
+        if (!isEquipped) return;
 
-        if (Input.GetMouseButton(0) && Player.Instance.isAttack == true)
-        {
-            if (GunManager.Instance.curBullet >= ammoPerShot)
-                StartCoroutine(Fire());
-            else
-                StartCoroutine(MeleeAttack());
-        }
+        InputVoid();
 
-        if (Input.GetMouseButtonDown(1) && skillModule != null && skillModule.CanUse())
-        {
-            skillModule.UseSkill();
-        }
     }
-
-
     public void Init(GunData data)
     {
         gunID = data.gunID;
@@ -78,7 +71,8 @@ public class Gun : MonoBehaviour
         reloadTime = data.reloadTime;
         fireRate = data.fireRate;
         bulletSpeed = data.bulletSpeed;
-
+        maxAmmo = data.maxAmmo;
+        curAmmo = maxAmmo;
         fireDelay = 1f / fireRate;
 
         SkillSettings(gunID);
@@ -92,6 +86,7 @@ public class Gun : MonoBehaviour
             skillModule = new EmptySkill();
     }
 
+    #region 공격
     private IEnumerator Fire()
     {
         Debug.Log("총 발사");
@@ -114,12 +109,11 @@ public class Gun : MonoBehaviour
             lastMoveDirection = dir;
         }
 
-        GunManager.Instance.curBullet -= ammoPerShot;
-        UiManager.instance.UpdateUI();
+        curAmmo -= ammoPerShot;
         yield return new WaitForSeconds(fireDelay);
 
         Player.Instance.animator.SetBool("isShoot", false);
-        handAnimator.SetBool("isFire", false);
+        //handAnimator.SetBool("isFire", false);
         Player.Instance.isAttack = true;
     }
 
@@ -144,16 +138,39 @@ public class Gun : MonoBehaviour
         yield return new WaitForSeconds(fireDelay);
         Player.Instance.isAttack = true;
     }
-
-    // 필요 없다면 제거 가능
-    /*
-    public void EquipWeapon(GunData gun)
+    #endregion
+    private void InputVoid()
     {
-        this.bulletSpeed = gun.bulletSpeed;
-        this.reloadTime = 1f / gun.fireRate;
-        this.ammoPerShot = gun.ammoPerShot;
+        if (Input.GetMouseButton(0) && Player.Instance.isAttack == true && isReloading == false)
+        {
+            if (curAmmo >= ammoPerShot)
+                StartCoroutine(Fire());
+            else
+                StartCoroutine(MeleeAttack());
+        }
+
+        if (Input.GetMouseButtonDown(1) && skillModule != null && skillModule.CanUse())
+        {
+            skillModule.UseSkill();
+        }
+        if(Input.GetKeyDown(KeyCode.R) && isReloading == false)
+        {
+            StartCoroutine(Reload());
+        }
     }
-    */
+    private IEnumerator Reload()  
+    {
+        if (curAmmo == maxAmmo) yield break;
+
+        isReloading = true;
+        Debug.Log("재장전 시작");
+        GunManager.Instance.curBullet -= (maxAmmo - curAmmo);
+
+        yield return new WaitForSeconds(reloadTime);
+        curAmmo = maxAmmo;
+        UiManager.instance.UpdateUI();
+        isReloading = false;
+    }
 
     private void OnDrawGizmosSelected()
     {

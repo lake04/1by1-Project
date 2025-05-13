@@ -9,8 +9,8 @@ public class GunManager : MonoBehaviour
     public static GunManager Instance;
 
     [Header("총기 생성 관련")]
-    [SerializeField] private GameObject gunParentObject; // 플레이어 손 위치
-    [SerializeField] private GameObject gun; // 총기 프리팹
+    [SerializeField] private GameObject gunParentObject; 
+    [SerializeField] private GameObject gun; 
 
     [Header("탄약")]
     public int maxBullet = 100;
@@ -23,7 +23,6 @@ public class GunManager : MonoBehaviour
     [SerializeField] private GunCategory currentWeaponSlot = GunCategory.MainWeapon;
     [SerializeField] private GameObject currentGunSprite;
 
-  
 
     private void Awake()
     {
@@ -34,7 +33,6 @@ public class GunManager : MonoBehaviour
         }
 
         Instance = this;
-        curBullet = maxBullet;
 
         equippedWeapons[GunCategory.MainWeapon] = null;
         equippedWeapons[GunCategory.SecondaryWeapon] = null;
@@ -130,12 +128,10 @@ public class GunManager : MonoBehaviour
         if (currentGunSprite != null)
             Destroy(currentGunSprite);
 
-        // 무기 생성 → 플레이어 손에 붙이기
         GameObject gunObj = Instantiate(gun, gunParentObject.transform);
         gunObj.name = currentGun.gunName;
-        gunObj.transform.localPosition = Vector3.zero; // 위치 초기화
+        gunObj.transform.localPosition = Vector3.zero;
 
-        // 스프라이트 설정
         SpriteRenderer spriteRenderer = gunObj.GetComponent<SpriteRenderer>();
         if (spriteRenderer != null && currentGun.gunID < GunDatabase.Instance.sprites.Count)
         {

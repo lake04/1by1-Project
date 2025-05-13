@@ -25,7 +25,8 @@ public class Player : Unit
     private float rollCooltime = 0.8f;
     #endregion
 
-    #region 총
+    #region 총 bd
+     
     public GameObject hand;
     public Transform aimingPoint;
     public int macBullet = 20;
@@ -45,8 +46,6 @@ public class Player : Unit
 
 
         Init();
-
-
     }
     void Start()
     {

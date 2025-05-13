@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d2b66ad312497894d9a39f35d21073e9
+guid: 49e788d0a7551384986dd154407c3dea
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,11 +97,11 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: playerSideFire_0
+      name: playerFire_0
       rect:
         serializedVersion: 2
         x: 40
-        y: 34
+        y: 24
         width: 35
         height: 76
       alignment: 0
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1dd96fc213c6e8843b1d16499cd73c52
-      internalID: 462270474
+      spriteID: 62a39d158bc96af43901f80fe32190ff
+      internalID: 1477168343
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerSideFire_1
+      name: playerFire_1
       rect:
         serializedVersion: 2
-        x: 200
-        y: 34
+        x: 160
+        y: 24
         width: 35
-        height: 76
+        height: 77
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0be889db087c08744b70964cb5b553f6
-      internalID: 295715951
+      spriteID: c66d5638cc481604e9c7d236831f3071
+      internalID: 1903650478
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerSideFire_2
+      name: playerFire_2
       rect:
         serializedVersion: 2
-        x: 357
-        y: 34
-        width: 36
-        height: 76
+        x: 280
+        y: 24
+        width: 35
+        height: 77
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94e6c630d24301e468291bd8057ca43e
-      internalID: -2047394826
+      spriteID: bc340b27c8746bd449f91d1c9490f000
+      internalID: 1869561118
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerSideFire_3
+      name: playerFire_3
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 24
+        width: 35
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 840fa6a4d5f6a904da0252290232070a
+      internalID: 885800588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: playerFire_4
       rect:
         serializedVersion: 2
         x: 520
-        y: 34
-        width: 34
-        height: 76
+        y: 24
+        width: 35
+        height: 77
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,18 +195,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7a98a9799739c374580b02d2d3d35c9c
-      internalID: -258374610
+      spriteID: 98499a64e3591174dbac40ddb53483c2
+      internalID: -1299717871
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerSideFire_4
+      name: playerFire_5
       rect:
         serializedVersion: 2
-        x: 680
-        y: 34
+        x: 640
+        y: 24
         width: 35
         height: 76
       alignment: 0
@@ -195,18 +216,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 97211c21121cf2344b51061edd1ea0ac
-      internalID: 1589252317
+      spriteID: 0a3efd720264b6047b65e078cf3a597a
+      internalID: -1420095177
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerSideFire_5
+      name: playerFire_6
       rect:
         serializedVersion: 2
-        x: 840
-        y: 34
+        x: 760
+        y: 24
         width: 35
         height: 76
       alignment: 0
@@ -216,8 +237,92 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 93105f4bc9d26814f93b72fd3bb7b1ea
-      internalID: -1624727871
+      spriteID: 88fe2a4a39fe4c44ebe23c65b5d71912
+      internalID: -393159978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: playerFire_7
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 24
+        width: 35
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c729eea162760b4d8bb873abeb499c5
+      internalID: -2034833845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: playerFire_8
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 24
+        width: 35
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1f23433ef44e52438434bf444fbaa8f
+      internalID: -391448073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: playerFire_9
+      rect:
+        serializedVersion: 2
+        x: 1120
+        y: 24
+        width: 35
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49abb1992020d664c9f7dc7dff6c9ede
+      internalID: -1183607595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: playerFire_10
+      rect:
+        serializedVersion: 2
+        x: 1240
+        y: 24
+        width: 35
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 742e44e1edc6c45479abbbd085d03c15
+      internalID: -2129102778
       vertices: []
       indices: 
       edges: []
@@ -233,12 +338,17 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      playerSideFire_0: 462270474
-      playerSideFire_1: 295715951
-      playerSideFire_2: -2047394826
-      playerSideFire_3: -258374610
-      playerSideFire_4: 1589252317
-      playerSideFire_5: -1624727871
+      playerFire_0: 1477168343
+      playerFire_1: 1903650478
+      playerFire_10: -2129102778
+      playerFire_2: 1869561118
+      playerFire_3: 885800588
+      playerFire_4: -1299717871
+      playerFire_5: -1420095177
+      playerFire_6: -393159978
+      playerFire_7: -2034833845
+      playerFire_8: -391448073
+      playerFire_9: -1183607595
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

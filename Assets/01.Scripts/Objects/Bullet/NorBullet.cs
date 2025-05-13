@@ -6,7 +6,7 @@ using static UnityEngine.UI.CanvasScaler;
 
 public class NorBullet : MonoBehaviour
 {
-    private WaitForSeconds wait2 = new WaitForSeconds(2);
+    private WaitForSeconds wait = new WaitForSeconds(2);
     private float damage;
 
     private void OnEnable()
@@ -16,7 +16,7 @@ public class NorBullet : MonoBehaviour
 
     private IEnumerator DestroyWait()
     {
-        yield return wait2;
+        yield return wait;
         GameManager.Instance.pool.BulletReturn(0, this.gameObject);
     }
 
