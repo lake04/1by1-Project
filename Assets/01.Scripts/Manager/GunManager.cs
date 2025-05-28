@@ -10,16 +10,18 @@ public class GunManager : MonoBehaviour
 
     [Header("총기 생성 관련")]
     [SerializeField] private GameObject gunParentObject; 
-    [SerializeField] private GameObject gun; 
+    [SerializeField] private GameObject gun;
+
+    [SerializeField] private GameObject gunObject;
 
     [Header("탄약")]
     public int maxBullet = 100;
     public int curBullet;
 
-    [SerializeField] private List<Image> slots = new();
+    [SerializeField] public List<Image> slots = new();
 
     [Header("무기 슬롯")]
-    [SerializeField] private Dictionary<GunCategory, GunData> equippedWeapons = new();
+    public Dictionary<GunCategory, GunData> equippedWeapons = new();
     [SerializeField] private GunCategory currentWeaponSlot = GunCategory.MainWeapon;
     [SerializeField] private GameObject currentGunSprite;
 
@@ -47,7 +49,6 @@ public class GunManager : MonoBehaviour
     private void Update()
     {
         SelectGunInput();
-   
     }
 
     public void EquipWeapon(GunData _newGun)
@@ -171,6 +172,18 @@ public class GunManager : MonoBehaviour
     {
         return equippedWeapons.ContainsKey(currentWeaponSlot) ? equippedWeapons[currentWeaponSlot] : null;
     }
+    public List<GunData> GetEquippedGunList()
+    {
+        List<GunData> gunList = new();
+        foreach (var weapon in equippedWeapons.Values)
+        {
+            if (weapon != null)
+                gunList.Add(weapon);
+        }
+        return gunList;
+    }
+
+   
 
     public void CreateGun(GunData _gunData, Vector3 spawnPosition)
     {

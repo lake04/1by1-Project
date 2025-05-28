@@ -7,16 +7,19 @@ public enum GunCategory
     MeleeWeapon
 }
 
-public enum GunPartType { Barrel, Handle, Magazine, Element }
+public enum GunKind
+{
+    pistol,
+    shotgun,
+    sniperRifle,
+}
 
 public class GunPartData
 {
     public string id;
     public string name;
-    public GunPartType type;
     public float damageModifier;
     public float fireRateModifier;
-    public string allowedGunType;
 }
 
 [System.Serializable]
@@ -25,6 +28,7 @@ public class GunRow
     public int gunID;
     public string gunName;
     public string gunCategory;
+    public string gunKind;
     public int damage;
     public int ammoPerShot;
     public int bulletsPerShot;
@@ -34,7 +38,7 @@ public class GunRow
     public float bulletSpeed;
     public int skillId;
     public bool canEquipParts;
-    public string allowedPartTypes; 
+    public int parts;
     public int maxAmmo;
     public int curAmmo;
 }
@@ -45,6 +49,7 @@ public class GunData
     public int gunID;
     public string gunName;
     public GunCategory gunCategory;
+    public GunKind gunKind;
     public int damage;
     public int ammoPerShot;
     public int bulletsPerShot;
@@ -54,7 +59,7 @@ public class GunData
     public float bulletSpeed;
     public int skillId;
     public bool canEquipParts = true;
-    public List<GunPartType> allowedPartTypes = new();
+    public int parts;
     public int maxAmmo;
     public int curAmmo;
 }

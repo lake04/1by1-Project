@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEngine.GraphicsBuffer;
 
 public class Player : Unit
 {
@@ -11,6 +12,7 @@ public class Player : Unit
     #region compoment
     private Rigidbody2D rigidbody2D;
     private Vector2 movement;
+    private Vector2 dir;
     public float angle;
     public Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -21,11 +23,12 @@ public class Player : Unit
     [SerializeField]
     private bool isRoll = true;
     [SerializeField]
-    private float rollSpeed = 4f;
-    private float rollCooltime = 0.8f;
+    private float rollSpeed = 8f;
+    private float rollCooltime = 1f;
+    public float rollAnimTime = 0;
     #endregion
 
-    #region 총 bd
+    #region 총 
      
     public GameObject hand;
     public Transform aimingPoint;
@@ -33,6 +36,9 @@ public class Player : Unit
     public int currentBullt;
 
     private float bulletSpeed = 20f;
+
+    float handAngle;
+    Vector2 target, mouse;
     #endregion
 
     private void Awake()
@@ -55,6 +61,8 @@ public class Player : Unit
     {
         AimingPoint();
         Roll();
+        HandAngle();
+        FlipSpriteByMouse();
     }
 
     private void FixedUpdate()
@@ -75,6 +83,10 @@ public class Player : Unit
         currentBullt = macBullet;
         attackCoolTime = 0.5f;
         isAttack = true;
+
+        target = transform.position;
+
+      
     }
 
     #region 움직임 
@@ -88,18 +100,16 @@ public class Player : Unit
         if (Input.GetAxisRaw("Horizontal") == 1 || Input.GetAxisRaw("Vertical") == 1 || Input.GetAxisRaw("Vertical") == -1)
         {
             spriteRenderer.flipX = false;
-            animator.SetBool("isMove", false);
+            //animator.SetBool("isMove", false);
+            //animator.SetBool("isIdle", false);
+            OnAnim(0);
 
-            animator.SetFloat("LastMoveX", Input.GetAxisRaw("Horizontal"));
-            animator.SetFloat("LastMoveY", Input.GetAxisRaw("Vertical"));
         }
         if(Input.GetAxisRaw("Horizontal") == -1)
         {
             spriteRenderer.flipX = true;
-            animator.SetBool("isMove", false);
-
-            animator.SetFloat("LastMoveX", Input.GetAxisRaw("Horizontal"));
-            animator.SetFloat("LastMoveY", Input.GetAxisRaw("Vertical"));
+            //animator.SetBool("isMove", false);
+            OnAnim(0);
         }
     }
 
@@ -107,22 +117,28 @@ public class Player : Unit
     public override void Move()
     {
         Idle();
+     
         if (isMove)
         {
             moveing = true;
-            animator.SetBool("isIdle", false);
+            //animator.SetBool("isIdle", false);
+            OnAnim(1);
+            //hand.SetActive(false);
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
 
             //spriteRenderer.flipX = movement.x < 0;
             if (movement.x != 0 || movement.y != 0)
             {
-                animator.SetBool("isMove", true);
+                //animator.SetBool("isMove", true);
+                OnAnim(1);
             }
             else
             {
-                animator.SetBool("isMove", false);
+                OnAnim(0);
+                //animator.SetBool("isMove", false);
                 moveing = false;
+                //hand.SetActive(true);
             }
             animator.SetFloat("inPutX", movement.x);
             animator.SetFloat("inPutY", movement.y);
@@ -143,22 +159,37 @@ public class Player : Unit
             isMove = false;
             isRoll = false;
             isAttack = false;
-            animator.SetBool("isRoll",true );
 
+            OnAnim(2);
+           
             Vector2 rollDirection = (movement != Vector2.zero) ? movement.normalized : lastMoveDirection;
 
             rigidbody2D.velocity = rollDirection * rollSpeed;
+            rollAnimTime = 0;
+            RuntimeAnimatorController controller = animator.runtimeAnimatorController;
+            for (int i = 0; i < controller.animationClips.Length; i++)
+            {
+                rollAnimTime = i*0.1f;
+            }
+            StartCoroutine(RollAnim());
 
-            StartCoroutine(EndRoll());
         }
+    }
+    private IEnumerator RollAnim()
+    {
+        yield return new WaitForSeconds(rollAnimTime);
+        isMove = true;
+        isAttack=true;
+        OnAnim(0);
+        StartCoroutine(EndRoll());
+
     }
     private IEnumerator EndRoll()
     {
         yield return new WaitForSeconds(rollCooltime); 
-        isMove = true;
         isRoll = true;
-        isAttack=true;
-        animator.SetBool("isRoll", false);
+        //animator.SetBool("isRoll", false);
+        
     }
     #endregion
 
@@ -169,11 +200,47 @@ public class Player : Unit
         Vector3 point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Mathf.Abs(Camera.main.transform.position.z - transform.position.z)));
         aimingPoint.transform.position = point;
     }
+    private void HandAngle()
+    {
+        target = hand.transform.position;
+        mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Vector2 direction = mouse - target;
+        handAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        hand.transform.rotation = Quaternion.Euler(0, 0, handAngle);
+
+        if (mouse.x < transform.position.x)
+        {
+            hand.transform.localScale = new Vector3(1, -1, 1); 
+        }
+        else
+        {
+            hand.transform.localScale = new Vector3(1, 1, 1); 
+        }
+    }
+
+
+    private void FlipSpriteByMouse()
+    {
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+
+        if (Mathf.Abs(horizontal) > 0.1f)
+        {
+            spriteRenderer.flipX = mouse.x < transform.position.x;
+        }
+    }
 
     #endregion
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        
+    }
+
+    public void OnAnim(int _animN)
+    {
+        animator.SetInteger("PlayerSet", _animN);
         
     }
 

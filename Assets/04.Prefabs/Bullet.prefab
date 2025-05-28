@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4067838475196413442}
   - component: {fileID: 7642728899584301676}
   - component: {fileID: 5795172442392179976}
-  - component: {fileID: 3565083476101546545}
   - component: {fileID: -553236642137150935}
   - component: {fileID: -5243193154593333527}
+  - component: {fileID: 4146874144137968637}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -77,12 +77,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: f45a62f60d4252d47ba86384f9ee3432, type: 3}
-  m_Color: {r: 1, g: 0.95671475, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 3a66ab87fa0c8414d80c29ba04f394f8, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -115,18 +115,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &3565083476101546545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8402984219936213885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d552c4db08a28e74594d0df4323f8e57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!70 &-553236642137150935
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -204,7 +192,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 5
+  m_Time: 0.2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -213,8 +201,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0.41204262
+        time: 0.0038986206
+        value: 0.084329605
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -235,7 +223,7 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.9996939, b: 0, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 1}
       key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -275,3 +263,18 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &4146874144137968637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8402984219936213885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfe95191431039c4984b65a5a449e46e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 0
+  speed: 0
+  bulletElement: 0

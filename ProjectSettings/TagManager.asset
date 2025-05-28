@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Enemy
   - SecondaryWeapon
+  - Inventroy
   layers:
   - Default
   - TransparentFX

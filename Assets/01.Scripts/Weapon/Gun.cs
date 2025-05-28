@@ -2,17 +2,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
+
+public enum Element
+{
+    None,
+    Fire,
+    Water,
+    Ground,
+    Ice,
+    Electricity
+}
 
 public class Gun : MonoBehaviour
 {
     public int gunID;
     public string gunName;
+
     public GunCategory gunCategory;
+    public GunKind gunKind;
+    public Element element = Element.None;
+
     public int damage;
     public int ammoPerShot;
     public int bulletsPerShot;
     public float bulletSpread;
-    public float reloadTime; // 장전 시간
+    public float reloadTime; 
     public float fireRate;   // 초당 발사 수
     public float bulletSpeed;
 
@@ -29,6 +44,8 @@ public class Gun : MonoBehaviour
     private Transform aimingPoint;
     [SerializeField] private Animator handAnimator;
     [SerializeField] private Player player;
+    [SerializeField] private Animation animation;
+    [SerializeField] private AnimatorOverrideController clip;
 
     public IGunSkill skillModule;
 
@@ -42,14 +59,15 @@ public class Gun : MonoBehaviour
     void Start()
     {
         player = GetComponentInParent<Player>();
+        animation = GetComponent<Animation>();
         if (aimingPoint == null)
             aimingPoint = Player.Instance.aimingPoint;
     }
 
     private void OnEnable()
     {
-        if (handAnimator == null)
-            handAnimator = Player.Instance.hand.GetComponent<Animator>();
+     
+
     }
 
     void Update()
@@ -74,6 +92,7 @@ public class Gun : MonoBehaviour
         maxAmmo = data.maxAmmo;
         curAmmo = maxAmmo;
         fireDelay = 1f / fireRate;
+        gunKind = data.gunKind;
 
         SkillSettings(gunID);
     }
@@ -91,12 +110,16 @@ public class Gun : MonoBehaviour
     {
         Debug.Log("총 발사");
         Player.Instance.isAttack = false;
-        Player.Instance.animator.SetBool("isShoot", true);
-
+        Player.Instance.hand.GetComponent<Animator>().SetBool("isFire", true);
+        
         for (int i = 0; i < bulletsPerShot; i++)
         {
+            Sprite bulletSprite = BulletManager.Instance.GetBulletSprite(gunKind, element);
             GameObject bullet = GameManager.Instance.pool.Get(0);
-            bullet.GetComponent<NorBullet>().Init(damage);
+
+            bullet.GetComponent<Bullet>().damage =damage;
+            bullet.GetComponent<Bullet>().bulletElement = element;
+            bullet.GetComponent<Bullet>().SetSprite(bulletSprite);
             if (bullet == null) continue;
 
             Vector2 dir = (aimingPoint.position - transform.position).normalized;
@@ -111,10 +134,10 @@ public class Gun : MonoBehaviour
 
         curAmmo -= ammoPerShot;
         yield return new WaitForSeconds(fireDelay);
-
-        Player.Instance.animator.SetBool("isShoot", false);
-        //handAnimator.SetBool("isFire", false);
         Player.Instance.isAttack = true;
+
+        Player.Instance.hand.GetComponent<Animator>().SetBool("isFire", false);
+        //handAnimator.SetBool("isFire", false);
     }
 
     private IEnumerator MeleeAttack()
@@ -166,7 +189,7 @@ public class Gun : MonoBehaviour
         Debug.Log("재장전 시작");
         GunManager.Instance.curBullet -= (maxAmmo - curAmmo);
 
-        yield return new WaitForSeconds(reloadTime);
+        yield return new WaitForSeconds(reloadTime/10);
         curAmmo = maxAmmo;
         UiManager.instance.UpdateUI();
         isReloading = false;

@@ -8,6 +8,7 @@ public class GunDatabase : MonoBehaviour
 
     public List<GunData> allGunData = new();
     private Dictionary<int, GunData> gunById = new();
+    public AnimationClip[] gunAnim;
 
     private void Awake()
     {

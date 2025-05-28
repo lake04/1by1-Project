@@ -23,6 +23,7 @@ public class GunDataManager : MonoBehaviour
                 gunID = row.gunID,
                 gunName = row.gunName,
                 gunCategory = ParseCategory(row.gunCategory),
+                gunKind = GetGunKind(row.gunKind),
                 damage = row.damage,
                 ammoPerShot = row.ammoPerShot,
                 bulletsPerShot = row.bulletsPerShot,
@@ -32,7 +33,7 @@ public class GunDataManager : MonoBehaviour
                 bulletSpeed = row.bulletSpeed,
                 skillId = row.skillId,
                 canEquipParts = SetBool(row.canEquipParts),
-                allowedPartTypes = ParsePartTypes(row.allowedPartTypes),
+                parts = row.parts,
                 maxAmmo = row.maxAmmo,
             };
             GunDatas.Add(data);
@@ -54,24 +55,21 @@ public class GunDataManager : MonoBehaviour
     {
         return Enum.TryParse(value, out GunCategory category) ? category : GunCategory.SecondaryWeapon;
     }
+    //public GunKind gunKind
 
-    private List<GunPartType> ParsePartTypes(string csv)
+    private GunKind GetGunKind(int n)
     {
-        List<GunPartType> result = new();
-        if (string.IsNullOrEmpty(csv)) return result;
-
-        string[] tokens = csv.Split(',');
-        foreach (var token in tokens)
+        switch(n)
         {
-            if (Enum.TryParse(token.Trim(), out GunPartType type))
-            {
-                result.Add(type);
-            }
-            else
-            {
-                Debug.LogWarning($"Invalid part type: {token}");
-            }
+            case 0: return GunKind.pistol;
+
+            case 1: return GunKind.shotgun;
+
+            case 2: return GunKind.sniperRifle;
+
+            default: return GunKind.pistol;
         }
-        return result;
     }
+
+    
 }
