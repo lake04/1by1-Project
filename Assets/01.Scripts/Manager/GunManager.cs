@@ -183,7 +183,18 @@ public class GunManager : MonoBehaviour
         return gunList;
     }
 
-   
+
+    public void EquipPart(Item part)
+    {
+        var currentGun = GunManager.Instance.GetCurrentGun();
+        if (currentGun == null) return;
+
+        currentGun.equippedParts.Add(part);
+
+        currentGun.baseDamage += part.damageModifier;
+        currentGun.fireRate += part.fireRateModifier;
+
+    }
 
     public void CreateGun(GunData _gunData, Vector3 spawnPosition)
     {

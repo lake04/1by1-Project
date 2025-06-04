@@ -18,23 +18,28 @@ public class Gun : MonoBehaviour
 {
     public int gunID;
     public string gunName;
+    public List<Item> equippedParts = new List<Item>();
+    public Item[] partSlots = new Item[3];
 
     public GunCategory gunCategory;
     public GunKind gunKind;
     public Element element = Element.None;
 
+    [Header("스탯")]
     public int damage;
     public int ammoPerShot;
     public int bulletsPerShot;
     public float bulletSpread;
-    public float reloadTime; 
-    public float fireRate;   // 초당 발사 수
+    public float reloadTime;
+    public float fireRate;
     public float bulletSpeed;
+    public int equipParts;
 
     [Header("탄창 관련")]
     public int maxAmmo;
     public int curAmmo;
     [SerializeField] private bool isReloading = false;
+    public List<Item> parts = new();
 
     public bool isEquipped = false;
     public Vector2 meleeSize = new Vector2(1.5f, 1.0f);
@@ -49,7 +54,9 @@ public class Gun : MonoBehaviour
 
     public IGunSkill skillModule;
 
-    private float fireDelay; // 발사 간격
+    private float fireDelay;
+    private float baseDamage;
+    private float baseFireRate;
 
     private static readonly Dictionary<int, Type> skills = new()
     {
@@ -64,37 +71,50 @@ public class Gun : MonoBehaviour
             aimingPoint = Player.Instance.aimingPoint;
     }
 
-    private void OnEnable()
-    {
-     
-
-    }
+    private void OnEnable() {}
 
     void Update()
     {
         if (!isEquipped) return;
-
         InputVoid();
-
     }
+
     public void Init(GunData data)
     {
         gunID = data.gunID;
         gunName = data.gunName;
         gunCategory = data.gunCategory;
-        damage = data.damage;
+        gunKind = data.gunKind;
+
+        baseDamage = data.damage;
+        baseFireRate = data.fireRate;
+
         ammoPerShot = data.ammoPerShot;
         bulletsPerShot = data.bulletsPerShot;
         bulletSpread = data.bulletSpread;
         reloadTime = data.reloadTime;
-        fireRate = data.fireRate;
         bulletSpeed = data.bulletSpeed;
         maxAmmo = data.maxAmmo;
         curAmmo = maxAmmo;
-        fireDelay = 1f / fireRate;
-        gunKind = data.gunKind;
 
+        ApplyPartsStats();
         SkillSettings(gunID);
+    }
+
+    private void ApplyPartsStats()
+    {
+        float totalDamageModifier = 1f;
+        float totalFireRateModifier = 1f;
+
+        foreach (var part in parts)
+        {
+            totalDamageModifier += part.GetDamageModifier();
+            totalFireRateModifier += part.GetFireRateModifier();
+        }
+
+        damage = Mathf.RoundToInt(baseDamage * totalDamageModifier);
+        fireRate = baseFireRate * totalFireRateModifier;
+        fireDelay = 1f / fireRate;
     }
 
     private void SkillSettings(int id)
@@ -105,22 +125,21 @@ public class Gun : MonoBehaviour
             skillModule = new EmptySkill();
     }
 
-    #region 공격
     private IEnumerator Fire()
     {
         Debug.Log("총 발사");
         Player.Instance.isAttack = false;
         Player.Instance.hand.GetComponent<Animator>().SetBool("isFire", true);
-        
+
         for (int i = 0; i < bulletsPerShot; i++)
         {
             Sprite bulletSprite = BulletManager.Instance.GetBulletSprite(gunKind, element);
             GameObject bullet = GameManager.Instance.pool.Get(0);
+            if (bullet == null) continue;
 
-            bullet.GetComponent<Bullet>().damage =damage;
+            bullet.GetComponent<Bullet>().damage = damage;
             bullet.GetComponent<Bullet>().bulletElement = element;
             bullet.GetComponent<Bullet>().SetSprite(bulletSprite);
-            if (bullet == null) continue;
 
             Vector2 dir = (aimingPoint.position - transform.position).normalized;
             float angleOffset = UnityEngine.Random.Range(-bulletSpread, bulletSpread);
@@ -135,9 +154,7 @@ public class Gun : MonoBehaviour
         curAmmo -= ammoPerShot;
         yield return new WaitForSeconds(fireDelay);
         Player.Instance.isAttack = true;
-
         Player.Instance.hand.GetComponent<Animator>().SetBool("isFire", false);
-        //handAnimator.SetBool("isFire", false);
     }
 
     private IEnumerator MeleeAttack()
@@ -161,10 +178,10 @@ public class Gun : MonoBehaviour
         yield return new WaitForSeconds(fireDelay);
         Player.Instance.isAttack = true;
     }
-    #endregion
+
     private void InputVoid()
     {
-        if (Input.GetMouseButton(0) && Player.Instance.isAttack == true && isReloading == false)
+        if (Input.GetMouseButton(0) && Player.Instance.isAttack && !isReloading)
         {
             if (curAmmo >= ammoPerShot)
                 StartCoroutine(Fire());
@@ -176,12 +193,14 @@ public class Gun : MonoBehaviour
         {
             skillModule.UseSkill();
         }
-        if(Input.GetKeyDown(KeyCode.R) && isReloading == false)
+
+        if (Input.GetKeyDown(KeyCode.R) && !isReloading)
         {
             StartCoroutine(Reload());
         }
     }
-    private IEnumerator Reload()  
+
+    private IEnumerator Reload()
     {
         if (curAmmo == maxAmmo) yield break;
 
@@ -189,7 +208,7 @@ public class Gun : MonoBehaviour
         Debug.Log("재장전 시작");
         GunManager.Instance.curBullet -= (maxAmmo - curAmmo);
 
-        yield return new WaitForSeconds(reloadTime/10);
+        yield return new WaitForSeconds(reloadTime / 10);
         curAmmo = maxAmmo;
         UiManager.instance.UpdateUI();
         isReloading = false;
@@ -204,5 +223,21 @@ public class Gun : MonoBehaviour
         Gizmos.matrix = Matrix4x4.TRS(center, Quaternion.Euler(0, 0, angle), Vector3.one);
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(Vector3.zero, meleeSize);
+    }
+
+    public void EquipPart(int slotIndex, Item item)
+    {
+        partSlots[slotIndex] = item;
+        ApplyPartsStats();
+    }
+
+    public void UnequipPart(int slotIndex)
+    {
+        partSlots[slotIndex] = null;
+        ApplyPartsStats();
+        //if (parts.Remove(part))
+        //{
+        //    ApplyPartsStats();
+        //}
     }
 }

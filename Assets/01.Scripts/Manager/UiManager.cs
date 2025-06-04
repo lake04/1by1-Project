@@ -9,6 +9,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private Text hpText;
     [SerializeField] private Slider bulletSlider;
     [SerializeField] private Text bulletText;
+    [SerializeField] private Canvas inventroy;
 
     private void Awake()
     {

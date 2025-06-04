@@ -62,4 +62,9 @@ public class GunData
     public int parts;
     public int maxAmmo;
     public int curAmmo;
+
+    public float baseDamage;
+    public float basefireRate;
+
+    public List<Item> equippedParts = new();
 }

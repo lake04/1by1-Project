@@ -33,6 +33,7 @@ public class DraggablUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
     public void OnDrag(PointerEventData eventData)
     {
         rect.position = eventData.position;
+
     }
 
 
@@ -42,6 +43,8 @@ public class DraggablUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
         {
             transform.SetParent(previousParent);
             rect.position = previousParent.GetComponentInParent<RectTransform>().position;
+            GunManager.Instance.EquipPart(itemData);
+
         }
 
         canvasGroup.alpha = 1f;
